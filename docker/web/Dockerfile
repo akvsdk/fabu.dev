@@ -26,9 +26,8 @@ RUN rm /etc/nginx/conf.d/default.conf
 RUN rm /etc/nginx/nginx.conf
 # 把主机的nginx.conf文件复制到nginx容器的/etc/nginx文件夹下
 COPY docker/web/nginx.conf /etc/nginx/
-RUN unzip web/dist.zip 
 # 拷贝前端vue项目打包后生成的文件到nginx下运行
-COPY web/dist /usr/share/nginx/html/
+RUN wget https://file.941103.xyz:6789/dist.zip && unzip ./dist.zip -d /usr/share/nginx/html/
 
 # 暴露8101端口 nginx 监听的端口
 EXPOSE 8804
