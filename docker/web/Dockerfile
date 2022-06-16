@@ -26,7 +26,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 RUN rm /etc/nginx/nginx.conf
 # 把主机的nginx.conf文件复制到nginx容器的/etc/nginx文件夹下
 COPY docker/web/nginx.conf /etc/nginx/
-RUN unzip -o web/dist.zip 
+RUN unzip web/dist.zip 
 # 拷贝前端vue项目打包后生成的文件到nginx下运行
 COPY web/dist /usr/share/nginx/html/
 
