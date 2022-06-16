@@ -25,7 +25,7 @@ FROM nginx:1.15.3-alpine as production-stage
 RUN rm /etc/nginx/conf.d/default.conf
 RUN rm /etc/nginx/nginx.conf
 # 把主机的nginx.conf文件复制到nginx容器的/etc/nginx文件夹下
-COPY docker/web/* /etc/nginx/
+ADD docker/web/* /etc/nginx/
 RUN ls /etc/nginx/ && which unzip
 # 拷贝前端vue项目打包后生成的文件到nginx下运行
 RUN unzip /etc/nginx/dist.zip -d /usr/share/nginx/html/
