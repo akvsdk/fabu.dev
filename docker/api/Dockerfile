@@ -20,6 +20,6 @@ COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 RUN mkdir -p runtime/logs
 
-CMD ./api
+CMD run main.go
 
 EXPOSE 8803
