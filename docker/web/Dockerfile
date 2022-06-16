@@ -8,8 +8,11 @@ WORKDIR /app
 RUN echo $PWD
 COPY ./web /app/
 
+# 设置淘宝npm镜像
+RUN npm install -g cnpm --registry=https://registry.npmmirror.com
 # 安装依赖
-RUN npm install
+RUN cnpm install
+
 
 # 打包 - 目的：丢到nginx下跑
 # RUN npm run build:prod
