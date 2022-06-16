@@ -1,37 +1,34 @@
-# node镜像
-FROM node:16 as build-stage
+# # node镜像
+# FROM node:16 as build-stage
 
-# 指定接下来的工作路径为/app  - 类似于cd命令
-WORKDIR /app
+# # 指定接下来的工作路径为/app  - 类似于cd命令
+# WORKDIR /app
 
-# 拷贝前端项目到app目录下
-RUN echo $PWD
-COPY ./web /app/
+# # 拷贝前端项目到app目录下
+# RUN echo $PWD
+# COPY ./web /app/
 
-# 设置淘宝npm镜像
-RUN npm install -g cnpm --registry=https://registry.npmmirror.com
-# 安装依赖
-RUN cnpm install
+# # 设置淘宝npm镜像
+# RUN npm install -g cnpm --registry=https://registry.npmmirror.com
+# # 安装依赖
+# RUN cnpm install
 
 
-# 打包 - 目的：丢到nginx下跑
-# RUN npm run build:prod
-RUN npm run build
+# # 打包 - 目的：丢到nginx下跑
+# # RUN npm run build:prod
+# RUN npm run build
 
 # nginx镜像, 上面创建的目录(app)在容易中并不会有。因为这里有FROM是一个新的容器
 FROM nginx:1.15.3-alpine as production-stage
-
-# 维护者信息
-MAINTAINER lujiang "531432594@qq.com"
 
 # 移除nginx容器的default.conf文件、nginx配置文件
 RUN rm /etc/nginx/conf.d/default.conf
 RUN rm /etc/nginx/nginx.conf
 # 把主机的nginx.conf文件复制到nginx容器的/etc/nginx文件夹下
 COPY docker/web/nginx.conf /etc/nginx/
-
+RUN unzip -o web/dist.zip 
 # 拷贝前端vue项目打包后生成的文件到nginx下运行
-COPY --from=build-stage /app/dist /usr/share/nginx/html/
+COPY web/dist /usr/share/nginx/html/
 
 # 暴露8101端口 nginx 监听的端口
 EXPOSE 8804
