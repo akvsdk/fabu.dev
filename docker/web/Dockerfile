@@ -1,8 +1,5 @@
 # node镜像
-FROM node:latest as build-stage
-
-# 维护者信息
-MAINTAINER lujiang "531432594@qq.com"
+FROM node:16 as build-stage
 
 # 指定接下来的工作路径为/app  - 类似于cd命令
 WORKDIR /app
@@ -11,15 +8,12 @@ WORKDIR /app
 RUN echo $PWD
 COPY ./web /app/
 
-
-# 设置淘宝npm镜像
-RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
 # 安装依赖
-RUN cnpm install
+RUN npm install
 
 # 打包 - 目的：丢到nginx下跑
 # RUN npm run build:prod
-RUN cnpm run build
+RUN npm run build
 
 # nginx镜像, 上面创建的目录(app)在容易中并不会有。因为这里有FROM是一个新的容器
 FROM nginx:1.15.3-alpine as production-stage
