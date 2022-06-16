@@ -42,8 +42,10 @@ const vueConfig = {
   configureWebpack: {
     // webpack plugins
     plugins: [
-      // Ignore all locale files of moment.js
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/,
+      }),
       new webpack.DefinePlugin({
         APP_VERSION: `"${require('./package.json').version}"`,
         GIT_HASH: JSON.stringify(getGitHash()),
